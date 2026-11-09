@@ -53,6 +53,8 @@ footer{text-align:center;color:#8993a5;margin-top:35px;font-size:13px}
 
 <h3>Your generated prompt</h3>
 <div id="output">Your prompt will appear here...</div>
+  <h3>📚 Prompt History</h3>
+<div id="history">No prompts yet.</div>
 <button onclick="copyPrompt()">Copy Prompt</button>
 </div>
 
@@ -79,6 +81,15 @@ Please respond in this style: ${style}.
 Give me a clear, useful and well-structured answer. Include examples where helpful and explain difficult concepts in an understandable way.`;
 
 document.getElementById('output').textContent=prompt;
+  let history = JSON.parse(localStorage.getItem('promptHistory') || '[]');
+
+history.unshift(prompt);
+history = history.slice(0, 5);
+
+localStorage.setItem('promptHistory', JSON.stringify(history));
+
+document.getElementById('history').textContent =
+history.map((item, i) => (i + 1) + '. ' + item).join('\n\n');
 }
 
 function copyPrompt(){
